@@ -2,8 +2,8 @@
 # coding: utf-8
 import qrcode
 import urllib
-import urllib2
-import cookielib
+# import urllib2
+# import cookielib
 import requests
 import xml.dom.minidom
 import json
@@ -16,7 +16,7 @@ import multiprocessing
 import platform
 import logging
 from collections import defaultdict
-from urlparse import urlparse
+from urllib.parse import urlparse
 from lxml import html
 
 # for media upload
@@ -29,7 +29,7 @@ def catchKeyboardInterrupt(fn):
         try:
             return fn(*args)
         except KeyboardInterrupt:
-            print '\n[*] 强制退出程序'
+            print('\n[*] 强制退出程序')
             logging.debug('[*] 强制退出程序')
     return wrapper
 

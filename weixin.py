@@ -162,7 +162,8 @@ class WebWeixin(object):
             '_': int(time.time())
         }
 
-        data = self._post(url, params, False)
+        #data = self._post(url, params, False)
+        data=requests.get(url,params).content
         QRCODE_PATH = self._saveFile('qrcode.jpg', data, '_showQRCodeImg')
         os.startfile(QRCODE_PATH)
 
@@ -995,14 +996,16 @@ class WebWeixin(object):
         return result
 
     def _get(self, url, api=None):
-        request = urllib2.Request(url=url)
-        request.add_header('Referer', 'https://wx.qq.com/')
+        # request = urllib2.Request(url=url)
+        headers={'Referer':'https://wx.qq.com/'}
         if api == 'webwxgetvoice':
-            request.add_header('Range', 'bytes=0-')
+            # request.add_header('Range', 'bytes=0-')
+            headers['Range']='bytes=0-'
         if api == 'webwxgetvideo':
-            request.add_header('Range', 'bytes=0-')
-        response = urllib2.urlopen(request)
-        data = response.read()
+            # request.add_header('Range', 'bytes=0-')
+            headers['Range']='bytes=0-'
+        response = requests.get(url,headers=headers)
+        data = response.text
         logging.debug(url)
         return data
 
@@ -1015,7 +1018,7 @@ class WebWeixin(object):
             # request = urllib2.Request(url=url, data=urllib.urlencode(params))
             response=requests.get(url=url,params=params)
         # response = urllib2.urlopen(request)
-        data = response.content
+        data = response.text
         if jsonfmt:
             return json.loads(data, object_hook=_decode_dict)
         return data
